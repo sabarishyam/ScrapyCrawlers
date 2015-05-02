@@ -18,3 +18,4 @@ class Apple(Item):
     #store_id = Field()
     #weekly_ad_url = Field()
     zipcode = Field()
+
