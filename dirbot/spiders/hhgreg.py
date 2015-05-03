@@ -1,7 +1,12 @@
+import urlparse
+
+from scrapy.contrib.spiders import CrawlSpider, Rule
+from scrapy.contrib.linkextractors.lxmlhtml import LxmlLinkExtractor
+from scrapy.spider import Spider
+from scrapy.selector import Selector
 from scrapy.item import Item, Field
 
-
-class Apple(Item):
+class Hhgreg(Item):
 
     city = Field()
     address = Field()
@@ -19,3 +24,5 @@ class Apple(Item):
     #weekly_ad_url = Field()
     zipcode = Field()
 
+class HhgregSpider():
+    

@@ -1,7 +1,6 @@
 import urlparse
 import re
 
-from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.http import FormRequest
 from scrapy.contrib.linkextractors.lxmlhtml import LxmlLinkExtractor
 from scrapy.spider import Spider
