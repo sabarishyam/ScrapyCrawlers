@@ -26,8 +26,8 @@ class Apple(Item):
 
 class AppleSpider(CrawlSpider):
     name = "apple"
-    allowed_domains = ["apple.com"]
-    rules = (Rule(LxmlLinkExtractor(allow=("(/[a-z]{2})?/retail/[a-z]+/")), callback='parse_obj', follow='True'),)
+    #allowed_domains = ["apple.com"]
+    rules = (Rule(LxmlLinkExtractor(allow=(r'(/[a-z]{2})?/retail/[a-z]+/')), callback='parse_obj', follow='True'),)
     start_urls = [
         "http://www.apple.com/retail/storelist/"
     ]
