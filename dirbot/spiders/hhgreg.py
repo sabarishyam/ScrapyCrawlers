@@ -50,7 +50,7 @@ class HhgregSpider(CrawlSpider):
     rules = [
         Rule(LxmlLinkExtractor(), callback='parse_obj', follow='True')
         ]
-    allowed_domains = ["hhgregg.com"]
+    allowed_domains = ["www.hhgregg.com"]
 
     start_urls = [
         "http://www.hhgregg.com"
@@ -158,7 +158,7 @@ class HhgregSpider(CrawlSpider):
                 pass
 
             
-        except:
+        except Exception,e:
             pass
 
         return items

@@ -50,60 +50,64 @@ class WetsealSpider(Spider):
     def parse1(self, response):
 
         sel = Selector(response)
+        items = []      
 
-        #Store address selector
-        store_address_list =  sel.xpath('//td[@class="store-address"]')
+        try:
+            #Store address selector
+            store_address_list =  sel.xpath('//td[@class="store-address"]')
 
-        #Store name selector
-        store_name_list = sel.xpath('//div[@class="store-name"]/text()').extract()
+            #Store name selector
+            store_name_list = sel.xpath('//div[@class="store-name"]/text()').extract()
 
-        #Store hours selector
-        store_hours_args = sel.xpath('//div[@class="store-hours"]')
+            #Store hours selector
+            store_hours_args = sel.xpath('//div[@class="store-hours"]')
 
-        #Fetch the Store state
-        store_state = response.request.body.split('=')[-1]
+            #Fetch the Store state
+            store_state = response.request.body.split('=')[-1]
 
-        items = []
-
-        for index,address in enumerate(store_address_list):
-            
-            item = Wetseal()
-            _args = address.extract().replace('\t','').split('\n')[1:-1]
-            
-            store_hours = regex.sub('', store_hours_args[index].extract()).strip('<div class="store-hours">').split('<br><br>')
-            item['store_hours'] = {}
-
-            # Parse Store hours to match a dict
-            for _entity in store_hours:
+            for index,address in enumerate(store_address_list):
                 
-                #Check to prevent any residual html tag from polluting store_hours dict()
-                if not re.match('\w+', _entity):
-                    break
-                _day,_hours = _entity.split(':',1)
-                item['store_hours'][_day] = _hours.replace('</','').strip()
-            
-            #Store Phone number
-            item['phone'] = _args[-1].strip()
+                item = Wetseal()
+                _args = address.extract().replace('\t','').split('\n')[1:-1]
+                
+                store_hours = regex.sub('', store_hours_args[index].extract()).strip('<div class="store-hours">').split('<br><br>')
+                item['store_hours'] = {}
 
-            #Store Address
-            item['address'] = ''.join(_args[:-1]).strip()
+                # Parse Store hours to match a dict
+                for _entity in store_hours:
+                    
+                    #Check to prevent any residual html tag from polluting store_hours dict()
+                    if not re.match('\w+', _entity):
+                        break
+                    _day,_hours = _entity.split(':',1)
+                    item['store_hours'][_day] = _hours.replace('</','').strip()
+                
+                #Store Phone number
+                item['phone'] = _args[-1].strip()
 
-            #Store Name         
-            item['store_name'] = store_name_list[index].strip()
+                #Store Address
+                item['address'] = ''.join(_args[:-1]).strip()
 
-            #Store State
-            item['state'] = store_state
+                #Store Name         
+                item['store_name'] = store_name_list[index].strip()
 
-            #Store Zipcode
-            item['zipcode'] = _args[-2].split(' ')[-1].replace('<br>','')
+                #Store State
+                item['state'] = store_state
 
-            #Store Country
-            #US because all the zipcodes were self-contained to USA
-            item['store_country'] = 'US'
+                #Store Zipcode
+                item['zipcode'] = _args[-2].split(' ')[-1].replace('<br>','')
 
-            #Store City
-            item['city'] =  _args[-2].split(',')[0].strip()
+                #Store Country
+                #US because all the zipcodes were self-contained to USA
+                item['store_country'] = 'US'
 
-            items.append(item)
+                #Store City
+                item['city'] =  _args[-2].split(',')[0].strip()
+
+                items.append(item)
+
+        except Exception,e:
+            #Ignore if there any exceptions parsing the response body
+            pass
   
         return items

@@ -91,7 +91,7 @@ class AppleSpider(CrawlSpider):
             #Store Zipcode
             items['zipcode'] = sel.xpath('//span[@class="postal-code"]/text()').extract()[0]
 
-        except:
+        except Exception,e:
             pass
 
         return items
