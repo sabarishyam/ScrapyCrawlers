@@ -3,3 +3,6 @@ To Run Apple Spider
 
 To Run WetSeal Spider
     scrapy crawl  wetseal -o wetseal.json
+
+To Run hhgregg Spider
+    scrapy crawl  hhgregg -o wetseal.json

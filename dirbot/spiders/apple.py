@@ -26,7 +26,7 @@ class Apple(Item):
 
 class AppleSpider(CrawlSpider):
     name = "apple"
-    #allowed_domains = ["apple.com"]
+    allowed_domains = ["apple.com"]
     rules = (Rule(LxmlLinkExtractor(allow=(r'(/[a-z]{2})?/retail/[a-z]+/')), callback='parse_obj', follow='True'),)
     start_urls = [
         "http://www.apple.com/retail/storelist/"
@@ -37,7 +37,7 @@ class AppleSpider(CrawlSpider):
         sel = Selector(response)
 
         items = Apple()
-        #import pdb; pdb.set_trace()
+
         try:
             items['city']  = sel.xpath('//span[@class="locality"]/text()').extract()[0]
             items['address'] = sel.xpath('//div[@class="street-address"]/text()').extract()[0]
@@ -71,9 +71,8 @@ class AppleSpider(CrawlSpider):
 
             items['state'] = sel.xpath('//span[@class="region"]/text()').extract()[0]
             items['zipcode'] = sel.xpath('//span[@class="postal-code"]/text()').extract()[0]
-            #import pdb; pdb.set_trace()
+
         except:
-            #import pdb; pdb.set_trace()
             pass
 
         return items
